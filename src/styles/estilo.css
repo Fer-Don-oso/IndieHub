@@ -1,0 +1,17 @@
+body{
+    background-image: url(../img/fondo2.jpg);
+}
+
+.navbar{
+    background-color: #212529;
+}
+
+#carouselExampleIndicators {
+    width: 80%;
+    margin: 0 auto;
+}
+
+.carousel-inner{
+    max-height: 500px;
+    object-fit: cover;
+}
