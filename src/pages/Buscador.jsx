@@ -11,6 +11,8 @@ const Buscador = () => {
     const [query, setQuery] = useState('');
     // Estado para los juegos que se muestran después de la búsqueda
     const [resultados, setResultados] = useState([]);
+    const [carrito, setCarrito] = useState([]);
+    // Estado para el carrito
 
     // 1. useEffect: Cargar todos los juegos al iniciar
     useEffect(() => {
@@ -18,6 +20,9 @@ const Buscador = () => {
         const juegos = [...initialJuegosFijos, ...juegosSubidos];
         setTodosLosJuegos(juegos);
         setResultados(juegos); // Inicialmente, muestra todos los juegos
+
+        const carritoGuardado = JSON.parse(localStorage.getItem('carrito')) || [];
+        setCarrito(carritoGuardado); // Cargar el carrito desde localStorage
     }, []);
 
     // 2. useEffect: Filtrar juegos cada vez que 'query' o 'todosLosJuegos' cambian
@@ -33,16 +38,25 @@ const Buscador = () => {
         setResultados(filtered);
     }, [query, todosLosJuegos]);
 
+    // Función para agregar un juego al carrito
+    const agregarAlCarrito = (juego) => {
+        const nuevoCarrito = [...carrito, juego];
+        setCarrito(nuevoCarrito);
+        localStorage.setItem('carrito', JSON.stringify(nuevoCarrito)); // Guardar en localStorage
+        alert(`${juego.nombre} ha sido agregado al carrito.`);
+    };
+
     // Componente para la Tarjeta de Juego (Mejora: reusar esta tarjeta)
     const GameCard = ({ juego }) => (
         <div className="col-md-4 mb-3">
             <div className="card h-100">
-                {/* Nota: Usamos juego.imagen si existe, sino, una imagen por defecto */}
                 <img src={juego.imagen || '/static/img/default.jpg'} className="card-img-top" alt={juego.nombre} />
                 <div className="card-body">
                     <h5 className="card-title">{juego.nombre}</h5>
                     <p className="card-text">Precio: ${juego.precio ? juego.precio.toFixed(2) : 'N/A'}</p>
-                    {/* Se puede añadir un botón de "Agregar al Carrito" aquí si es necesario */}
+                    <button className="btn btn-primary" onClick={() => agregarAlCarrito(juego)}>
+                        Agregar al Carrito
+                    </button>
                 </div>
             </div>
         </div>

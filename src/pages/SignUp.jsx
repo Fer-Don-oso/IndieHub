@@ -16,8 +16,24 @@ const SignUp = () => {
             alert('Por favor, completa todos los campos.');
             return;
         }
+
+        if (nombre.length < 4) {
+            alert('El nombre debe tener al menos 4 caracteres.');
+            return;
+        }
+
         if (password !== password2) {
             alert('Las contraseñas no coinciden.');
+            return;
+        }
+
+        if (password.length < 8) {
+            alert('La contraseña debe tener al menos 8 caracteres.');
+            return;
+        }
+
+        if (!/(?=.*[a-zA-Z])(?=.*[0-9])/.test(password)) {
+            alert('La contraseña debe incluir letras y números.');
             return;
         }
 

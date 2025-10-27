@@ -5,7 +5,6 @@ const Login = ({ setIsLoggedIn }) => {
     // Hooks para capturar los valores del formulario
     const [correo, setCorreo] = useState('');
     const [password, setPassword] = useState('');
-    const [recuperarCorreo, setRecuperarCorreo] = useState('');
     const navigate = useNavigate();
 
     const datosUsuario = () => {
@@ -22,22 +21,9 @@ const Login = ({ setIsLoggedIn }) => {
         }
     };
 
-    const recuperarContrasena = () => {
-        const users = JSON.parse(localStorage.getItem('users')) || [];
-        const user = users.find(u => u.correo === recuperarCorreo);
-
-        if (user) {
-            alert('Tu contraseña es: ' + user.password);
-            // En React, el modal se cerraría con lógica de estado, aquí confiamos en el data-bs-dismiss
-        } else {
-            alert('Correo no registrado.');
-        }
-        setRecuperarCorreo('');
-    };
-
     return (
         <main>
-            <h1 className="titulos" style={{ backgroundColor: 'rgba(237, 244, 250, 0.7)', textAlign: 'center' }}>Bienvenido</h1>
+            <h1 className="titulos" style={{ backgroundColor: 'rgba(237, 244, 250, 0.7)', textAlign: 'center' }}>Por favor, inicia sesión</h1>
     
             <div className="container d-flex justify-content-center"> {/* CENTRA EL CONTENIDO */}
                 <div className="card p-4 shadow-lg" style={{ maxWidth: '400px', width: '100%', marginTop: '30px' }}>
@@ -55,28 +41,25 @@ const Login = ({ setIsLoggedIn }) => {
                         />
                     </div>
             
-            {/* Campo Contraseña */}
+                    {/* Campo Contraseña */}
                     <div className="mb-3">
                         <label htmlFor="login-password" className="form-label">Contraseña</label>
                         <input 
                             type="password" 
                             id="login-password" 
                             className="form-control" 
+                            placeholder="Ingresa tu contraseña"
                             value={password} 
                             onChange={(e) => setPassword(e.target.value)} 
                         />
                     </div>
 
                     <button type="button" onClick={datosUsuario} className="btn btn-success w-100 mb-2">
-                        Enviar
-                    </button>
-            
-                    <button type="button" className="btn btn-link" data-bs-toggle="modal" data-bs-target="#recuperarModal">
-                        Recuperar contraseña
+                        Iniciar sesión
                     </button>
                 </div>
             </div>
-</main>
+        </main>
     );
 };
 

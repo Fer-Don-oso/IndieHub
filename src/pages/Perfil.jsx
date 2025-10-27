@@ -44,8 +44,6 @@ const Perfil = () => {
                 <div className="card-body">
                     <h5 className="card-title">Usuario: {usuario.nombre}</h5>
                     <p className="card-text">Email: {usuario.email}</p>
-                    {/* El enlace a /editar_perfil aún no está implementado */}
-                    <a href="/editar_perfil" className="btn btn-primary">Editar Perfil</a>
                 </div>
             </div>
 

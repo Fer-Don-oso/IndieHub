@@ -28,6 +28,8 @@ const Foro = () => {
     const [temas, setTemas] = useState([]);
     // Estado para el texto del nuevo comentario
     const [nuevoComentario, setNuevoComentario] = useState('');
+    // Estado para el título del nuevo tema
+    const [nuevoTemaTitulo, setNuevoTemaTitulo] = useState('');
     // Estado para saber qué tema está expandido
     const [temaActivo, setTemaActivo] = useState(null); 
 
@@ -81,6 +83,29 @@ const Foro = () => {
         setNuevoComentario(''); // Limpiar el input
     };
 
+    const agregarTema = () => {
+        const loggedUser = JSON.parse(localStorage.getItem('loggedUser'));
+        if (!loggedUser) {
+            alert("Debes iniciar sesión para crear un nuevo tema.");
+            return;
+        }
+
+        if (nuevoTemaTitulo.trim() === '') return;
+
+        const nuevoTema = {
+            id: Date.now(),
+            titulo: nuevoTemaTitulo.trim(),
+            autor: loggedUser.nombre || 'Usuario Anónimo',
+            fecha: new Date().toISOString().split('T')[0],
+            comentarios: []
+        };
+
+        const nuevosTemas = [...temas, nuevoTema];
+        setTemas(nuevosTemas);
+        localStorage.setItem('foroTemas', JSON.stringify(nuevosTemas));
+        setNuevoTemaTitulo(''); // Limpiar el input
+    };
+
     // Obtenemos el nombre del usuario para el saludo
     const loggedUser = JSON.parse(localStorage.getItem('loggedUser'));
     const nombreUsuario = loggedUser ? loggedUser.nombre : 'Invitado';
@@ -89,6 +114,23 @@ const Foro = () => {
         <main className="container mt-5">
             <h1 className="mb-4">Foro IndieHub - ¡Bienvenido, {nombreUsuario}!</h1>
 
+            {/* Formulario para agregar un nuevo tema */}
+            <div className="mb-4">
+                <input 
+                    type="text" 
+                    className="form-control" 
+                    placeholder="Título del nuevo tema..."
+                    value={nuevoTemaTitulo}
+                    onChange={(e) => setNuevoTemaTitulo(e.target.value)}
+                />
+                <button 
+                    className="btn btn-success mt-2" 
+                    onClick={agregarTema}
+                >
+                    Crear Tema
+                </button>
+            </div>
+            
             {temas.map(tema => (
                 <div key={tema.id} className="card mb-3 shadow-sm">
                     <div className="card-header bg-primary text-white" onClick={() => toggleTema(tema.id)} style={{ cursor: 'pointer' }}>
